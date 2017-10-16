@@ -2,10 +2,13 @@
 """process-text
 
 Usage:
-  process-text <config>
+  process-text <config> [--verbose]
+  process-text --version
 
 Options:
-  -h --help     Show this screen.
+  -h --help      Show this screen.
+  --version      Show version.
+  -v --verbose   Tell me what's happening.
 
 """
 import docopt
@@ -44,17 +47,23 @@ if __name__ == '__main__':
             config[fn]['replace'].clear()
             config[fn]['replace']['0'] = tmp
 
+        if args['--verbose']:
+            print('writing from {}[0] to {}'.format(fn, config[fn]['structure']['*']))
+
         touched_files = set()  # need to keep track of files already written to to not overwrite content
 
         outfile = open(config[fn]['structure']['*'], 'w')
         touched_files.add(config[fn]['structure']['*'])
 
         with open(fn, 'r', errors='ignore') as f:
-            for i, l in enumerate(f):
+            for linum, l in enumerate(f):
 
                 # set file pointer according to structure
                 for key in config[fn]['structure']:
                     if key != '*' and key in l:
+
+                        if args['--verbose']:
+                            print('writing from {}[{}] to {}:'.format(fn, linum, config[fn]['structure'][key]))
 
                         outfile.close()
 
@@ -71,6 +80,9 @@ if __name__ == '__main__':
                         for key in config[fn]['replace'][order]:
                             if key in l:
 
+                                if args['--verbose']:
+                                    print('  {}[{}]:'.format(fn, linum), key, '->', config[fn]['replace'][order][key])
+
                                 l = l.replace(key, config[fn]['replace'][order][key])
 
                 # replace strings defined globally
@@ -78,6 +90,9 @@ if __name__ == '__main__':
                     for order in sorted(config['replace']):
                         for key in config['replace'][order]:
                             if key in l:
+
+                                if args['--verbose']:
+                                    print('  {}[{}]:'.format(fn, linum), key, '->', config['replace'][order][key])
 
                                 l = l.replace(key, config['replace'][order][key])
 
