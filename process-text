@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+"""process-text
+
+Usage:
+  process-text <config>
+
+Options:
+  -h --help     Show this screen.
+
+"""
+import docopt
+import json
+import os
+
+if __name__ == '__main__':
+    args = docopt.docopt(__doc__, version='0.0.1')
+
+    with open(args['<config>'], 'r') as f:
+        config = json.load(f)
+
+    # use only one order if none are given
+    if 'replace' in config and '0' not in config['replace']:
+        tmp = config['replace'].copy()
+        config['replace'].clear()
+        config['replace']['0'] = tmp
+
+    for fn in sorted(config.keys()):
+
+        if fn == 'replace':  # skip global replacement entry
+            continue
+
+        # if no outputfile is given, write to filename + -mod
+        if 'structure' not in config[fn]:
+            basename, ext = os.path.splitext(fn)
+            config[fn]['structure'] = {'*': basename + '-mod' + ext}
+
+        # write to /dev/null if not default given
+        if '*' not in config[fn]['structure']:
+            config[fn]['structure']['*'] = '/dev/null'
+
+        # use only one order if none are given
+        if 'replace' in config[fn] and '0' not in config[fn]['replace']:
+            tmp = config[fn]['replace'].copy()
+            config[fn]['replace'].clear()
+            config[fn]['replace']['0'] = tmp
+
+        touched_files = set()  # need to keep track of files already written to to not overwrite content
+
+        outfile = open(config[fn]['structure']['*'], 'w')
+        touched_files.add(config[fn]['structure']['*'])
+
+        with open(fn, 'r', errors='ignore') as f:
+            for i, l in enumerate(f):
+
+                # set file pointer according to structure
+                for key in config[fn]['structure']:
+                    if key != '*' and key in l:
+
+                        outfile.close()
+
+                        # append if already written to, otherwise clear content
+                        if config[fn]['structure'][key] in touched_files:
+                            outfile = open(config[fn]['structure'][key], 'a')
+                        else:
+                            outfile = open(config[fn]['structure'][key], 'w')
+                            touched_files.add(config[fn]['structure'][key])
+
+                # replace strings defined for this source file
+                if 'replace' in config[fn]:
+                    for order in sorted(config[fn]['replace']):
+                        for key in config[fn]['replace'][order]:
+                            if key in l:
+
+                                l = l.replace(key, config[fn]['replace'][order][key])
+
+                # replace strings defined globally
+                if 'replace' in config:
+                    for order in sorted(config['replace']):
+                        for key in config['replace'][order]:
+                            if key in l:
+
+                                l = l.replace(key, config['replace'][order][key])
+
+                # write line
+                outfile.write(l)
+        outfile.close()
