@@ -1,0 +1,19 @@
+This is unimportant stuff that will be removed.
+
+Lorem ipsum dolor sit amet, et vim doming consectetuer, nostrum principes philosophia pri at. Appetere complectitur mea id, nam sint epicuri ex, appetere accusata his in. Choro laoreet fierent vix et. Et est facilisi urbanitas.
+
+This is a relevant section in the first source file that will end up in the second target file.
+
+His justo dolor ad, noster blandit ut vix. Ipsum dolores his at. Vitae incorrupte ullamcorper id eam, ridens imperdiet at sit. Recusabo vulputate at his, ei vero omnesque recusabo est, ut purto electram vel.
+
+[figures/source-1-target-2.pdf]
+
+And another section from the first source. This should be written to the first target file.
+
+Vis aliquip invenire dissentiet ad, in vim scripta dissentiet comprehensam. Quo ad partem concludaturque, ut vocibus docendi vix. At dicat molestiae maiestatis per, ut per solum vocibus. Sit lobortis sententiae ne. Rebum decore philosophia id pri, et audire blandit constituam nam.
+
+[figures/source-1-target-1.pdf]
+
+Some more stuff that should be written to the second target file.
+
+Dicunt percipit eos ad. Docendi placerat no quo, at duis facilisi vis, paulo iriure id has. At vis graeco scaevola, dicta oratio recusabo vel te. Id atqui intellegat ius. Duo id ullum gloriatur, no sint ferri dolorum nam.

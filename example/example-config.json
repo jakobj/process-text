@@ -1,0 +1,30 @@
+{
+    "replace":
+    {
+        "0":
+        {
+            "[figures/": "[otherfigures/"
+        },
+        "1":
+        {
+            ".pdf": ".eps"
+        }
+    },
+    "source-1.txt":
+    {
+        "structure":
+        {
+            "This is unimportant stuff": "/dev/null",
+            "This is a relevant section": "target-2.txt",
+            "And another section from": "target-1.txt",
+            "Some more stuff that": "target-2.txt"
+        }
+    },
+    "source-2.txt":
+    {
+        "replace":
+        {
+            "[figures/": "[source-2-figures/"
+        }
+    }
+}
